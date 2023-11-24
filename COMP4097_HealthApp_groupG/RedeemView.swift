@@ -13,10 +13,12 @@ struct RedeemView: View {
     
     var body: some View {
         VStack {
-            Text("Gift Redemption").padding()
+            Text("Gift Redemption")
+                .padding()
                 .font(.system(.title, weight: .bold))
+            
             List(Gift.gifts) { gift in
-                VStack(alignment: .center) {
+                VStack(alignment: .center) { // Align items to the center
                     Image(gift.image)
                         .resizable()
                         .frame(width: 100.0, height: 100.0)
@@ -24,9 +26,9 @@ struct RedeemView: View {
                     
                     Text("Gift: \(gift.title)")
                     
-                    Text("Steps to Redem: \(gift.stepRequired)")
+                    Text("Steps to Redeem: \(gift.stepRequired)")
                     
-                    if(steps > gift.stepRequired) {
+                    if (steps > gift.stepRequired) {
                         Button(action: {
                             consume(required: gift.stepRequired)
                         }) {
@@ -45,21 +47,22 @@ struct RedeemView: View {
                         
                     } else {
                         Button(action: {}) {
-                                Text("Redeem")
-                                    .font(.subheadline)
-                                    .padding()
-                                    .foregroundColor(.white)
-                                    .background(Color.gray)
-                                    .cornerRadius(8)
-                            }.padding()
+                            Text("Redeem")
+                                .font(.subheadline)
+                                .padding()
+                                .foregroundColor(.white)
+                                .background(Color.gray)
+                                .cornerRadius(8)
                         }
+                        .padding()
                     }
-                    
-                }.padding()
-                
-                
-            }.frame(height: CGFloat(15) * CGFloat(45))
+                }
+                .frame(maxWidth: .infinity) // Expand the VStack horizontally
+            }
+            .frame(height: CGFloat(15) * CGFloat(45))
         }
+        .frame(maxWidth: .infinity) // Expand the outer VStack horizontally
+    }
 }
 
 extension RedeemView {

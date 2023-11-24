@@ -37,6 +37,7 @@ struct StepDataView: View {
                     .font(.system(size: 30))
                 
                 //TODO: gen a chart each 30 mins
+                //no history record
                 
                 Spacer()
                 
