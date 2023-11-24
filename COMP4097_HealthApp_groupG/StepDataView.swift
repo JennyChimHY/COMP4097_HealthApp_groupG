@@ -40,9 +40,12 @@ struct StepDataView: View {
 }
 
 //TODO: CoreData:
+//user
+//pwd
 //daily steps
 //accumulate steps
-//redemption??
+//redemmedStep
+//goal
 
 extension StepDataView {
     //TODO: a function to calculate the km and calories
