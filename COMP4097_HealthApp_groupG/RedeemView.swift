@@ -85,6 +85,7 @@ extension Gift {
 }
 
 struct RedeemView_Previews: PreviewProvider {
+    let persistenceController = PersistenceController.shared
     static var previews: some View {
         RedeemView()
     }

@@ -15,17 +15,21 @@ struct StepDataView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     
-    let user_id: String = "001"
+    let user_id: String = "002"
     
     @FetchRequest(entity: Health.entity(), sortDescriptors: [])
     var healths: FetchedResults<Health>
     
     
     var body: some View {
-        VStack {
-            List(healths.filter { $0.userID == user_id }) { health in
-                Text("Welcome \(health.username ?? "abc")").padding()
-                    .font(.title)
+            
+        List(healths.filter { $0.userID == user_id }) { health in
+            
+            Text("Welcome \(health.username ?? "abc") !").padding()
+                .font(.title)
+            
+            VStack {
+                
                 Text("Today's Steps: \(health.dailyStep)").padding()
                 
                     .font(.system(size: 30, weight: .bold))
@@ -42,11 +46,11 @@ struct StepDataView: View {
                 Spacer()
             }
             
-        }.padding()
-            .onAppear() {
-                calculateDistance()  //TODO: pass param health.dailyStep
-                calculateCalories() //TODO: pass param health.dailyStep
-            }
+        }.frame()
+//            .onAppear() {
+//                calculateDistance()  //TODO: pass param health.dailyStep
+//                calculateCalories() //TODO: pass param health.dailyStep
+//            }
     }
 }
 
@@ -67,6 +71,7 @@ extension StepDataView {
     }
 }
 struct StepDataView_Previews: PreviewProvider {
+    let persistenceController = PersistenceController.shared
     static var previews: some View {
         StepDataView()
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)

@@ -113,10 +113,10 @@
 			children = (
 				9F3B62AB2B107FB700A8AA3F /* Health+CoreDataClass.swift */,
 				9F3B62A92B107FB700A8AA3F /* HealthData.xcdatamodeld */,
+				D2DDC5132B07497C008DB215 /* COMP4097_HealthApp_groupGApp.swift */,
 				9F3B62A72B107F7E00A8AA3F /* Persistence.swift */,
 				9F3B62A42B107CB500A8AA3F /* LoginView.swift */,
 				9F3B62A32B107CB500A8AA3F /* RegistryView.swift */,
-				D2DDC5132B07497C008DB215 /* COMP4097_HealthApp_groupGApp.swift */,
 				D2DDC5152B07497C008DB215 /* ContentView.swift */,
 				D2D65DB82B1054D00066BB7D /* StepDataView.swift */,
 				D2D65DBA2B1054DC0066BB7D /* GoalView.swift */,

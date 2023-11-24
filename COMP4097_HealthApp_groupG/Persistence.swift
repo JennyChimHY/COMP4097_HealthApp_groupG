@@ -14,10 +14,25 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        for _ in 0..<10 {
+        
+        for _ in 0..<1 {
             let newItem = Health(context: viewContext)  //Entity Name
-            newItem.dailyStep = Int32()
+            newItem.id = "2" //String()
+            newItem.userID = "002" //String()
+            newItem.username = "Jenny" //String()
+            newItem.password = "123456" //String()
+            newItem.dailyStep = 10000 //Int32()
+            newItem.accumulateStep = 200000 //Int32()
+            newItem.redemmedStep = 0 //Int32()
+            newItem.goal = 5000 //Int32()
         }
+//        let healths: [[String: Any]] = [
+//         ["id": "1", "userID": "001", "username": "Alan", "password": "123456", "dailyStep": 2000, "accumulateStep": 240000, "redemmedStep": 0, "goal": 10000],
+//         ["id": "2", "userID": "002", "username": "Jenny", "password": "123456", "dailyStep": 10000, "accumulateStep": 200000, "redemmedStep": 0, "goal": 5000],
+//         ["id": "3", "userID": "003", "username": "Martin", "password": "123456", "dailyStep": 5000, "accumulateStep": 500000, "redemmedStep": 0, "goal": 10000],
+//         ["id": "4", "userID": "004", "username": "Kenny", "password": "123456", "dailyStep": 20000, "accumulateStep": 300000, "redemmedStep": 0, "goal": 15000]
+//        ]
+        
         do {
             try viewContext.save()
         } catch {

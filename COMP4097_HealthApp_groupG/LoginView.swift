@@ -53,18 +53,18 @@ struct LoginView: View {
                     
                     Spacer().frame(height: 30)
                     
-                    HStack {
-                        Text("Not a member?")
-                            .font(.footnote)
-                            .foregroundColor(.black)
-                        Spacer().frame(width: 5)
-                        NavigationLink(destination: RegistryView(onLoginSuccess:onLoginSuccess)) {
-                            Text("Register Now")
-                                .font(.footnote)
-                                .foregroundColor(.cyan)
-                                .fontWeight(.bold)
-                        }
-                    }
+//                    HStack {
+//                        Text("Not a member?")
+//                            .font(.footnote)
+//                            .foregroundColor(.black)
+//                        Spacer().frame(width: 5)
+//                        NavigationLink(destination: RegistryView(onLoginSuccess:onLoginSuccess)) {
+//                            Text("Register Now")
+//                                .font(.footnote)
+//                                .foregroundColor(.cyan)
+//                                .fontWeight(.bold)
+//                        }
+//                    }
                 }
                 .padding()
             }
@@ -80,6 +80,8 @@ struct LoginView: View {
             } else {
                 print("Incorrect password")
             }
+        
+        //login success: save the userID and username as the identifier in AppStorage / global var
     }
 }
 

@@ -15,60 +15,60 @@ struct RegistryView: View {
     
     var body: some View {
         ZStack {
-                VStack {
-                    Spacer().frame(height: 10)
-                    
-                    Text("Let's get started!")
-                        .font(.title)
-                        .foregroundColor(.black)
-                    
-                    Spacer().frame(height: 30)
-                    
-                    Image(systemName: "figure.run.circle.fill")
-                        .resizable()
-                        .frame(width:100, height: 100)
-                        //.imageScale(.large)
-                    
-                    TextField("Username", text: $username)
+            VStack {
+                Spacer().frame(height: 10)
+                
+                Text("Let's get started!")
+                    .font(.title)
+                    .foregroundColor(.black)
+                
+                Spacer().frame(height: 30)
+                
+                Image(systemName: "figure.run.circle.fill")
+                    .resizable()
+                    .frame(width:100, height: 100)
+                //.imageScale(.large)
+                
+                TextField("Username", text: $username)
+                    .padding()
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                Spacer().frame(height: 5)
+                
+                SecureField("Password", text: $password)
+                    .padding()
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                Spacer().frame(height: 20)
+                
+                Button(action: {
+                    self.signUserIn()
+                }) {
+                    Text("Sign In")
                         .padding()
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                    
-                    Spacer().frame(height: 5)
-                    
-                    SecureField("Password", text: $password)
-                        .padding()
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                                     
-                    Spacer().frame(height: 20)
-                    
-                    Button(action: {
-                        self.signUserIn()
-                    }) {
-                        Text("Sign In")
-                            .padding()
-                            .foregroundColor(.white)
-                            .background(Color.blue)
-                            .cornerRadius(8)
-                    }
-                    
-                    Spacer().frame(height: 30)
-                    
-                    HStack {
-                        Text("Already have an account?")
-                            .font(.footnote)
-                            .foregroundColor(.black)
-                        Spacer().frame(width: 5)
-                        NavigationLink(destination: LoginView(onLoginSuccess: onLoginSuccess)) {
-                            Text("Login Now")
-                                .font(.footnote)
-                                .foregroundColor(.cyan)
-                                .fontWeight(.bold)
-                        }
-                    }
+                        .foregroundColor(.white)
+                        .background(Color.blue)
+                        .cornerRadius(8)
                 }
-                .padding()
+                
+                Spacer().frame(height: 30)
+                
+//                HStack {
+//                    Text("Already have an account?")
+//                        .font(.footnote)
+//                        .foregroundColor(.black)
+//                    Spacer().frame(width: 5)
+//                    NavigationLink(destination: LoginView(onLoginSuccess: onLoginSuccess)) {
+//                        Text("Login Now")
+//                            .font(.footnote)
+//                            .foregroundColor(.cyan)
+//                            .fontWeight(.bold)
+//                    }
+//                }
+//                .padding()
             }
-        .edgesIgnoringSafeArea(.all)
+            .edgesIgnoringSafeArea(.all)
+        }
     }
     
     func signUserIn() {
