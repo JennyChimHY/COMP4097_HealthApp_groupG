@@ -9,13 +9,23 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, Health App!")
+        
+        TabView {
+            
+            StepDataView().tabItem {
+                Image(systemName: "flame.fill")
+                Text("Step")
+            }
+            GoalView().tabItem {
+                Image(systemName: "star.circle.fill")
+                Text("Goal")
+            }
+            RedeemView().tabItem {
+                Image(systemName: "gift.fill")
+                Text("Redeem")
+            }
         }
-        .padding()
+//        .preferredColorScheme(darkMode ? .dark : .light)
     }
 }
 

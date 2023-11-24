@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D2D65DB92B1054D00066BB7D /* StepDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D65DB82B1054D00066BB7D /* StepDataView.swift */; };
+		D2D65DBB2B1054DC0066BB7D /* GoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D65DBA2B1054DC0066BB7D /* GoalView.swift */; };
+		D2D65DBD2B1054EA0066BB7D /* RedeemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D65DBC2B1054EA0066BB7D /* RedeemView.swift */; };
 		D2DDC5142B07497C008DB215 /* COMP4097_HealthApp_groupGApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DDC5132B07497C008DB215 /* COMP4097_HealthApp_groupGApp.swift */; };
 		D2DDC5162B07497C008DB215 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2DDC5152B07497C008DB215 /* ContentView.swift */; };
 		D2DDC5182B07497D008DB215 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2DDC5172B07497D008DB215 /* Assets.xcassets */; };
@@ -34,6 +37,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D2D65DB82B1054D00066BB7D /* StepDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepDataView.swift; sourceTree = "<group>"; };
+		D2D65DBA2B1054DC0066BB7D /* GoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalView.swift; sourceTree = "<group>"; };
+		D2D65DBC2B1054EA0066BB7D /* RedeemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedeemView.swift; sourceTree = "<group>"; };
 		D2DDC5102B07497C008DB215 /* COMP4097_HealthApp_groupG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = COMP4097_HealthApp_groupG.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2DDC5132B07497C008DB215 /* COMP4097_HealthApp_groupGApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = COMP4097_HealthApp_groupGApp.swift; sourceTree = "<group>"; };
 		D2DDC5152B07497C008DB215 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -97,6 +103,9 @@
 			children = (
 				D2DDC5132B07497C008DB215 /* COMP4097_HealthApp_groupGApp.swift */,
 				D2DDC5152B07497C008DB215 /* ContentView.swift */,
+				D2D65DB82B1054D00066BB7D /* StepDataView.swift */,
+				D2D65DBA2B1054DC0066BB7D /* GoalView.swift */,
+				D2D65DBC2B1054EA0066BB7D /* RedeemView.swift */,
 				D2DDC5172B07497D008DB215 /* Assets.xcassets */,
 				D2DDC5192B07497D008DB215 /* COMP4097_HealthApp_groupG.entitlements */,
 				D2DDC51A2B07497D008DB215 /* Preview Content */,
@@ -260,7 +269,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2DDC5162B07497C008DB215 /* ContentView.swift in Sources */,
+				D2D65DB92B1054D00066BB7D /* StepDataView.swift in Sources */,
 				D2DDC5142B07497C008DB215 /* COMP4097_HealthApp_groupGApp.swift in Sources */,
+				D2D65DBD2B1054EA0066BB7D /* RedeemView.swift in Sources */,
+				D2D65DBB2B1054DC0066BB7D /* GoalView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
