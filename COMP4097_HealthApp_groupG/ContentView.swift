@@ -8,26 +8,35 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var isLoggedIn = false
+    @State private var username: String = ""
+
     var body: some View {
-        
-        TabView {
-            
-            StepDataView().tabItem {
-                Image(systemName: "flame.fill")
-                Text("Step")
+        if isLoggedIn {
+            TabView {
+                StepDataView().tabItem {
+                    Image(systemName: "flame.fill")
+                    Text("Step")
+                }
+                GoalView().tabItem {
+                    Image(systemName: "star.circle.fill")
+                    Text("Goal")
+                }
+                RedeemView().tabItem {
+                    Image(systemName: "gift.fill")
+                    Text("Gift Redemption")
+                }
             }
-            GoalView().tabItem {
-                Image(systemName: "star.circle.fill")
-                Text("Goal")
-            }
-            RedeemView().tabItem {
-                Image(systemName: "gift.fill")
-                Text("Gift Redemption")
-            }
+            //.preferredColorScheme(darkMode ? .dark : .light)
+        } else {
+            LoginView(onLoginSuccess: { enteredUsername in
+                self.username = enteredUsername
+                self.isLoggedIn = true
+            })
         }
-//        .preferredColorScheme(darkMode ? .dark : .light)
     }
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

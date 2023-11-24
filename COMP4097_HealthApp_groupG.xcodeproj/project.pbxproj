@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F3B62A52B107CB500A8AA3F /* RegistryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B62A32B107CB500A8AA3F /* RegistryView.swift */; };
+		9F3B62A62B107CB500A8AA3F /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B62A42B107CB500A8AA3F /* LoginView.swift */; };
 		D2D65DB92B1054D00066BB7D /* StepDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D65DB82B1054D00066BB7D /* StepDataView.swift */; };
 		D2D65DBB2B1054DC0066BB7D /* GoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D65DBA2B1054DC0066BB7D /* GoalView.swift */; };
 		D2D65DBD2B1054EA0066BB7D /* RedeemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D65DBC2B1054EA0066BB7D /* RedeemView.swift */; };
@@ -37,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9F3B62A32B107CB500A8AA3F /* RegistryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistryView.swift; sourceTree = "<group>"; };
+		9F3B62A42B107CB500A8AA3F /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		D2D65DB82B1054D00066BB7D /* StepDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepDataView.swift; sourceTree = "<group>"; };
 		D2D65DBA2B1054DC0066BB7D /* GoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalView.swift; sourceTree = "<group>"; };
 		D2D65DBC2B1054EA0066BB7D /* RedeemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedeemView.swift; sourceTree = "<group>"; };
@@ -101,6 +105,8 @@
 		D2DDC5122B07497C008DB215 /* COMP4097_HealthApp_groupG */ = {
 			isa = PBXGroup;
 			children = (
+				9F3B62A42B107CB500A8AA3F /* LoginView.swift */,
+				9F3B62A32B107CB500A8AA3F /* RegistryView.swift */,
 				D2DDC5132B07497C008DB215 /* COMP4097_HealthApp_groupGApp.swift */,
 				D2DDC5152B07497C008DB215 /* ContentView.swift */,
 				D2D65DB82B1054D00066BB7D /* StepDataView.swift */,
@@ -269,8 +275,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2DDC5162B07497C008DB215 /* ContentView.swift in Sources */,
+				9F3B62A62B107CB500A8AA3F /* LoginView.swift in Sources */,
 				D2D65DB92B1054D00066BB7D /* StepDataView.swift in Sources */,
 				D2DDC5142B07497C008DB215 /* COMP4097_HealthApp_groupGApp.swift in Sources */,
+				9F3B62A52B107CB500A8AA3F /* RegistryView.swift in Sources */,
 				D2D65DBD2B1054EA0066BB7D /* RedeemView.swift in Sources */,
 				D2D65DBB2B1054DC0066BB7D /* GoalView.swift in Sources */,
 			);
