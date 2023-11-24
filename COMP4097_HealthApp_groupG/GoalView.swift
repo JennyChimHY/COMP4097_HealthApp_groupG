@@ -13,6 +13,11 @@ struct GoalView: View {
     }
 }
 
+extension GoalView {
+    //TODO: input the goal into the DB aka core data
+    //call function to compare the goal and the current step in daily
+}
+
 struct GoalView_Previews: PreviewProvider {
     static var previews: some View {
         GoalView()

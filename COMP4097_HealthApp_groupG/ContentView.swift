@@ -22,7 +22,7 @@ struct ContentView: View {
             }
             RedeemView().tabItem {
                 Image(systemName: "gift.fill")
-                Text("Redeem")
+                Text("Gift Redemption")
             }
         }
 //        .preferredColorScheme(darkMode ? .dark : .light)
