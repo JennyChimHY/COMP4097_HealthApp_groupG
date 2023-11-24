@@ -1,254 +1,272 @@
-diff --git a/COMP4097_HealthApp_groupG/ContentView.swift b/COMP4097_HealthApp_groupG/ContentView.swift
-index 12dcb85..208ed21 100644
---- a/COMP4097_HealthApp_groupG/ContentView.swift
-+++ b/COMP4097_HealthApp_groupG/ContentView.swift
-@@ -8,27 +8,36 @@
- import SwiftUI
+diff --git a/COMP4097_HealthApp_groupG/COMP4097_HealthApp_groupGApp.swift b/COMP4097_HealthApp_groupG/COMP4097_HealthApp_groupGApp.swift
+index 2d964ef..5a170c1 100644
+--- a/COMP4097_HealthApp_groupG/COMP4097_HealthApp_groupGApp.swift
++++ b/COMP4097_HealthApp_groupG/COMP4097_HealthApp_groupGApp.swift
+@@ -6,12 +6,45 @@
+ //
  
- struct ContentView: View {
-+    @State private var isLoggedIn = false
-+    @State private var username: String = ""
-+
-     var body: some View {
--        
--        TabView {
--            
--            StepDataView().tabItem {
--                Image(systemName: "flame.fill")
--                Text("Step")
--            }
--            GoalView().tabItem {
--                Image(systemName: "star.circle.fill")
--                Text("Goal")
--            }
--            RedeemView().tabItem {
--                Image(systemName: "gift.fill")
--                Text("Gift Redemption")
-+        if isLoggedIn {
-+            TabView {
-+                StepDataView().tabItem {
-+                    Image(systemName: "flame.fill")
-+                    Text("Step")
-+                }
-+                GoalView().tabItem {
-+                    Image(systemName: "star.circle.fill")
-+                    Text("Goal")
-+                }
-+                RedeemView().tabItem {
-+                    Image(systemName: "gift.fill")
-+                    Text("Gift Redemption")
-+                }
-             }
-+            //.preferredColorScheme(darkMode ? .dark : .light)
-+        } else {
-+            LoginView(onLoginSuccess: { enteredUsername in
-+                self.username = enteredUsername
-+                self.isLoggedIn = true
-+            })
+ import SwiftUI
++import CoreData
+ 
+ @main
+ struct COMP4097_HealthApp_groupGApp: App {
++    let persistenceController = PersistenceController.shared
++    
++    @AppStorage("shouldSeedData") var shouldSeedData: Bool = true
++    
+     var body: some Scene {
+         WindowGroup {
+             ContentView()
++                .environment(\.managedObjectContext, persistenceController.container.viewContext)
          }
--//        .preferredColorScheme(darkMode ? .dark : .light)
      }
  }
- 
 +
++extension COMP4097_HealthApp_groupGApp {
++    private func seedData() {
++           if !shouldSeedData { return }
++
++           let healths: [[String: Any]] = [
++            ["id": "1", "userID": "001", "username": "Alan", "password": "123456", "dailyStep": 2000, "accumulateStep": 240000, "redemmedStep": 0, "goal": 10000],
++            ["id": "2", "userID": "002", "username": "Jenny", "password": "123456", "dailyStep": 10000, "accumulateStep": 200000, "redemmedStep": 0, "goal": 5000],
++            ["id": "3", "userID": "003", "username": "Martin", "password": "123456", "dailyStep": 5000, "accumulateStep": 500000, "redemmedStep": 0, "goal": 10000],
++            ["id": "4", "userID": "004", "username": "Kenny", "password": "123456", "dailyStep": 20000, "accumulateStep": 300000, "redemmedStep": 0, "goal": 15000]
++           ]
++
++           let viewContext = persistenceController.container.viewContext
++           viewContext.automaticallyMergesChangesFromParent = true
++
++           viewContext.performAndWait {
++               let insertRequest = NSBatchInsertRequest(entity: Health.entity(), objects: healths)
++
++               let result = try? viewContext.execute(insertRequest) as? NSBatchInsertResult
++
++               if let status = result?.result as? Int, status == 1 {
++                   print("Data Seeded")
++                   shouldSeedData = false
++               }
++           }
++       }
++}
+diff --git a/COMP4097_HealthApp_groupG/ContentView.swift b/COMP4097_HealthApp_groupG/ContentView.swift
+index 12dcb85..4288673 100644
+--- a/COMP4097_HealthApp_groupG/ContentView.swift
++++ b/COMP4097_HealthApp_groupG/ContentView.swift
+@@ -32,5 +32,6 @@ struct ContentView: View {
  struct ContentView_Previews: PreviewProvider {
      static var previews: some View {
          ContentView()
-diff --git a/COMP4097_HealthApp_groupG/LoginView.swift b/COMP4097_HealthApp_groupG/LoginView.swift
++            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+     }
+ }
+diff --git a/COMP4097_HealthApp_groupG/Persistence.swift b/COMP4097_HealthApp_groupG/Persistence.swift
 new file mode 100644
-index 0000000..2e770b9
+index 0000000..4eb3a33
 --- /dev/null
-+++ b/COMP4097_HealthApp_groupG/LoginView.swift
-@@ -0,0 +1,94 @@
++++ b/COMP4097_HealthApp_groupG/Persistence.swift
+@@ -0,0 +1,56 @@
 +//
-+//  LoginView.swift
++//  Persistence.swift
 +//  COMP4097_HealthApp_groupG
 +//
-+//  Created by Tak Ting Ho on 24/11/2023.
++//  Created by f0226942 on 24/11/2023.
 +//
 +
-+import SwiftUI
++import Foundation
++import CoreData
 +
-+struct LoginView: View {
-+    @State private var username: String = ""
-+    @State private var password: String = ""
-+        
-+    var onLoginSuccess: (String) -> Void
-+    
-+    var body: some View {
-+        ZStack {
-+                VStack {
-+                    Spacer().frame(height: 10)
-+                    
-+                    Text("Welcome back!")
-+                        .font(.title)
-+                        .foregroundColor(.black)
-+                    
-+                    Spacer().frame(height: 30)
-+                    
-+                    Image(systemName: "figure.run.circle.fill")
-+                        .resizable()
-+                        .frame(width:100, height: 100)
-+                        //.imageScale(.large)
-+                    
-+                    TextField("Username", text: $username)
-+                        .padding()
-+                        .textFieldStyle(RoundedBorderTextFieldStyle())
-+                    
-+                    Spacer().frame(height: 5)
-+                    
-+                    SecureField("Password", text: $password)
-+                        .padding()
-+                        .textFieldStyle(RoundedBorderTextFieldStyle())
-+                    
-+                    Spacer().frame(height: 20)
-+                    
-+                    Button(action: {
-+                        self.signUserIn()
-+                    }) {
-+                        Text("Login In")
-+                            .padding()
-+                            .foregroundColor(.white)
-+                            .background(Color.blue)
-+                            .cornerRadius(8)
-+                    }
-+                    
-+                    Spacer().frame(height: 30)
-+                    
-+                    HStack {
-+                        Text("Not a member?")
-+                            .font(.footnote)
-+                            .foregroundColor(.black)
-+                        Spacer().frame(width: 5)
-+                        NavigationLink(destination: RegistryView(onLoginSuccess:onLoginSuccess)) {
-+                            Text("Register Now")
-+                                .font(.footnote)
-+                                .foregroundColor(.cyan)
-+                                .fontWeight(.bold)
-+                        }
-+                    }
-+                }
-+                .padding()
-+            }
-+        .edgesIgnoringSafeArea(.all)
-+    }
-+    
-+    func signUserIn() {
-+            let correctPassword = "password"
-+            
-+            if password == correctPassword {
-+                print("Login successful")
-+                onLoginSuccess(username)
-+            } else {
-+                print("Incorrect password")
-+            }
-+    }
-+}
++struct PersistenceController {
++    static let shared = PersistenceController()
 +
-+struct LoginView_Previews: PreviewProvider {
-+    static var previews: some View {
-+        LoginView(onLoginSuccess: { username in
-+            print("Logged in as: \(username)")
++    static var preview: PersistenceController = {
++        let result = PersistenceController(inMemory: true)
++        let viewContext = result.container.viewContext
++        for _ in 0..<10 {
++            let newItem = Health(context: viewContext)  //Entity Name
++            newItem.dailyStep = Int32()
++        }
++        do {
++            try viewContext.save()
++        } catch {
++            // Replace this implementation with code to handle the error appropriately.
++            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
++            let nsError = error as NSError
++            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
++        }
++        return result
++    }()
++
++    let container: NSPersistentContainer
++
++    init(inMemory: Bool = false) {
++        container = NSPersistentContainer(name: "HealthData")
++        if inMemory {
++            container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
++        }
++        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
++            if let error = error as NSError? {
++                // Replace this implementation with code to handle the error appropriately.
++                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
++
++                /*
++                Typical reasons for an error here include:
++                * The parent directory does not exist, cannot be created, or disallows writing.
++                * The persistent store is not accessible, due to permissions or data protection when the device is locked.
++                * The device is out of space.
++                * The store could not be migrated to the current model version.
++                Check the error message to determine what the actual problem was.
++                */
++                fatalError("Unresolved error \(error), \(error.userInfo)")
++            }
 +        })
 +    }
 +}
-+
-+
-diff --git a/COMP4097_HealthApp_groupG/RegistryView.swift b/COMP4097_HealthApp_groupG/RegistryView.swift
+diff --git a/COMP4097_HealthApp_groupG/StepDataView.swift b/COMP4097_HealthApp_groupG/StepDataView.swift
+index 28f361e..bb97e16 100644
+--- a/COMP4097_HealthApp_groupG/StepDataView.swift
++++ b/COMP4097_HealthApp_groupG/StepDataView.swift
+@@ -8,63 +8,67 @@
+ import SwiftUI
+ 
+ struct StepDataView: View {
+-    @State var todayStep: Int = 250 //@State: dynamic data
+-    @State var accumulateStep: Int = 3000
+-    @State var distance: Float = 0.3
+-    @State var calories: Int = 30
++    //    @State var todayStep: Int = 250 //@State: dynamic data
++    //    @State var accumulateStep: Int = 3000
++   var distance: Float = 0.3 // @State
++   var calories: Int = 30 // @State 
++    
++    @Environment(\.managedObjectContext) private var viewContext
++    
++    let user_id: String = "001"
++    
++    @FetchRequest(entity: Health.entity(), sortDescriptors: [])
++    var healths: FetchedResults<Health>
++    
+     
+     var body: some View {
+         VStack {
+-            Text("Welcome abc!").padding()
+-                .font(.title)
+-            Text("Today's Steps: \(todayStep)").padding()
+-
+-                .font(.system(size: 30, weight: .bold))
+-            Text("Accumulated Steps: \(accumulateStep) ").padding()
+-                .font(.system(size: 30))
+-            
+-            //TODO: gen a chart each 30 mins
+-            
+-            Spacer()
+-            
+-            Text("Distance Obtained: \(round(distance*10)/10.0) Km")
+-            Text("Calories Burnt: \(calories) cal.")
+-            
+-            Spacer()
++            List(healths.filter { $0.userID == user_id }) { health in
++                Text("Welcome \(health.username ?? "abc")").padding()
++                    .font(.title)
++                Text("Today's Steps: \(health.dailyStep)").padding()
++                
++                    .font(.system(size: 30, weight: .bold))
++                Text("Accumulated Steps: \(health.accumulateStep) ").padding()
++                    .font(.system(size: 30))
++                
++                //TODO: gen a chart each 30 mins
++                
++                Spacer()
++                
++                Text("Distance Obtained: \(distance) Km") //round(health.dailyStep*10)/10.0
++                Text("Calories Burnt: \(calories) cal.")
++                
++                Spacer()
++            }
+             
+         }.padding()
+-        
+-        
+-        
++            .onAppear() {
++                calculateDistance()  //TODO: pass param health.dailyStep
++                calculateCalories() //TODO: pass param health.dailyStep
++            }
+     }
+ }
+ 
+-//TODO: CoreData:
+-//user
+-//pwd
+-//daily steps
+-//accumulate steps
+-//redemmedStep
+-//goal
+-
+ extension StepDataView {
+     //TODO: a function to calculate the km and calories
+     
+-    func increaseStep() {
+-        todayStep = todayStep + 2
+-    }
++//    func increaseStep() {
++//        todayStep = todayStep + 2
++//    }
+     
+     func calculateDistance() {
+-        
++        print("calculateDistance")
+ //        return 0
+     }
+     
+     func calculateCalories() {
+-        
++        print("calculateCalories")
+     }
+ }
+ struct StepDataView_Previews: PreviewProvider {
+     static var previews: some View {
+         StepDataView()
++            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+     }
+ }
+diff --git a/Health+CoreDataClass.swift b/Health+CoreDataClass.swift
 new file mode 100644
-index 0000000..cd10f4d
+index 0000000..332aa0d
 --- /dev/null
-+++ b/COMP4097_HealthApp_groupG/RegistryView.swift
-@@ -0,0 +1,92 @@
++++ b/Health+CoreDataClass.swift
+@@ -0,0 +1,15 @@
 +//
-+//  RegistryView.swift
++//  Health+CoreDataClass.swift
 +//  COMP4097_HealthApp_groupG
 +//
-+//  Created by Tak Ting Ho on 24/11/2023.
++//  Created by f0226942 on 24/11/2023.
++//
 +//
 +
-+import SwiftUI
++import Foundation
++import CoreData
 +
-+struct RegistryView: View {
-+    @State private var username: String = ""
-+    @State private var password: String = ""
-+    
-+    var onLoginSuccess: (String) -> Void
-+    
-+    var body: some View {
-+        ZStack {
-+                VStack {
-+                    Spacer().frame(height: 10)
-+                    
-+                    Text("Let's get started!")
-+                        .font(.title)
-+                        .foregroundColor(.black)
-+                    
-+                    Spacer().frame(height: 30)
-+                    
-+                    Image(systemName: "figure.run.circle.fill")
-+                        .resizable()
-+                        .frame(width:100, height: 100)
-+                        //.imageScale(.large)
-+                    
-+                    TextField("Username", text: $username)
-+                        .padding()
-+                        .textFieldStyle(RoundedBorderTextFieldStyle())
-+                    
-+                    Spacer().frame(height: 5)
-+                    
-+                    SecureField("Password", text: $password)
-+                        .padding()
-+                        .textFieldStyle(RoundedBorderTextFieldStyle())
-+                                     
-+                    Spacer().frame(height: 20)
-+                    
-+                    Button(action: {
-+                        self.signUserIn()
-+                    }) {
-+                        Text("Sign In")
-+                            .padding()
-+                            .foregroundColor(.white)
-+                            .background(Color.blue)
-+                            .cornerRadius(8)
-+                    }
-+                    
-+                    Spacer().frame(height: 30)
-+                    
-+                    HStack {
-+                        Text("Already have an account?")
-+                            .font(.footnote)
-+                            .foregroundColor(.black)
-+                        Spacer().frame(width: 5)
-+                        NavigationLink(destination: LoginView(onLoginSuccess: onLoginSuccess)) {
-+                            Text("Login Now")
-+                                .font(.footnote)
-+                                .foregroundColor(.cyan)
-+                                .fontWeight(.bold)
-+                        }
-+                    }
-+                }
-+                .padding()
-+            }
-+        .edgesIgnoringSafeArea(.all)
-+    }
-+    
-+    func signUserIn() {
-+            let correctPassword = "password"
-+            
-+            if password == correctPassword {
-+                print("Login successful")
-+                onLoginSuccess(username)
-+            } else {
-+                print("Incorrect password")
-+            }
-+    }
-+}
++@objc(Health)
++public class Health: NSManagedObject {
 +
-+struct RegistryView_Previews: PreviewProvider {
-+    static var previews: some View {
-+        RegistryView(onLoginSuccess: {username in
-+            print("Logged in as: \(username)")
-+        })
-+    }
 +}
+diff --git a/HealthData.xcdatamodeld/HealthData.xcdatamodel/contents b/HealthData.xcdatamodeld/HealthData.xcdatamodel/contents
+new file mode 100644
+index 0000000..83af2ff
+--- /dev/null
++++ b/HealthData.xcdatamodeld/HealthData.xcdatamodel/contents
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
++<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22G74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
++    <entity name="Health" representedClassName="Health" syncable="YES" codeGenerationType="category">
++        <attribute name="accumulateStep" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
++        <attribute name="dailyStep" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
++        <attribute name="goal" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
++        <attribute name="id" optional="YES" attributeType="String"/>
++        <attribute name="password" optional="YES" attributeType="String"/>
++        <attribute name="redemmedStep" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
++        <attribute name="userID" optional="YES" attributeType="String"/>
++        <attribute name="username" optional="YES" attributeType="String"/>
++    </entity>
++</model>
+\ No newline at end of file
