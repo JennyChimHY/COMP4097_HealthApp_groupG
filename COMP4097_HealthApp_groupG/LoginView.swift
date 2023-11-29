@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct LoginView: View {
     @State private var username: String = ""
     @State private var password: String = ""
-        
+    @State private var loggedInUserID: String? = nil
+    
     var onLoginSuccess: (String) -> Void
     
     var body: some View {
@@ -20,7 +22,7 @@ struct LoginView: View {
                     
                     Text("Welcome back!")
                         .font(.title)
-                        .foregroundColor(.black)
+                        
                     
                     Spacer().frame(height: 30)
                     
@@ -42,7 +44,7 @@ struct LoginView: View {
                     Spacer().frame(height: 20)
                     
                     Button(action: {
-                        self.signUserIn()
+                        loggedInUserID = self.signUserIn(username: username, password: password)
                     }) {
                         Text("Login In")
                             .padding()
@@ -71,17 +73,46 @@ struct LoginView: View {
         .edgesIgnoringSafeArea(.all)
     }
     
-    func signUserIn() {
-            let correctPassword = "password"
+//    func signUserIn() {
+//            let correctPassword = "123456"
+//            
+//            if password == correctPassword {
+//                print("Login successful")
+//                onLoginSuccess(username)
+//            } else {
+//                print("Incorrect password")
+//            }
+//        
+//        //login success: save the userID and username as the identifier in AppStorage / global var
+//    }
+    
+    func signUserIn(username: String, password: String) -> String? {
+        let viewContext = PersistenceController.shared.container.viewContext
             
-            if password == correctPassword {
-                print("Login successful")
-                onLoginSuccess(username)
+        let fetchRequest: NSFetchRequest<Health> = Health.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "username == %@", username)
+
+        do {
+            let users = try viewContext.fetch(fetchRequest)
+            print(try viewContext.fetch(fetchRequest))
+            print("Username: \(username), Password: \(password)")
+            if let user = users.first {
+                if user.password == password {
+                    onLoginSuccess(username)
+                    print(user.userID!)
+                    return user.userID
+                } else {
+                    print("Incorrect password")
+                    return nil
+                }
             } else {
-                print("Incorrect password")
+                print("Username not found")
+                return nil
             }
-        
-        //login success: save the userID and username as the identifier in AppStorage / global var
+        } catch let error as NSError {
+            print("Fetch error: \(error), \(error.userInfo)")
+            return nil
+        }
     }
 }
 

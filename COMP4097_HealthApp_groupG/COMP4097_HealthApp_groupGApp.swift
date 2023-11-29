@@ -18,6 +18,7 @@ struct COMP4097_HealthApp_groupGApp: App {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .onAppear(perform: seedData)
         }
     }
 }
@@ -33,7 +34,7 @@ extension COMP4097_HealthApp_groupGApp {
             ["id": "4", "userID": "004", "username": "Kenny", "password": "123456", "dailyStep": 20000, "accumulateStep": 300000, "redemmedStep": 0, "goal": 15000]
            ]
 
-           let viewContext = persistenceController.container.viewContext
+        let viewContext = persistenceController.container.viewContext
            viewContext.automaticallyMergesChangesFromParent = true
 
            viewContext.performAndWait {
