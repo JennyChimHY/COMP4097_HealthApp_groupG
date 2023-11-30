@@ -11,7 +11,8 @@ import CoreData
 struct LoginView: View {
     @State private var username: String = ""
     @State private var password: String = ""
-    @State private var loggedInUserID: String? = nil
+//    @State private var loggedInUserID: String? = nil
+    @AppStorage("loggedInUserID") var loggedInUserID = ""
     
     var onLoginSuccess: (String) -> Void
     
@@ -44,7 +45,7 @@ struct LoginView: View {
                     Spacer().frame(height: 20)
                     
                     Button(action: {
-                        loggedInUserID = self.signUserIn(username: username, password: password)
+                        loggedInUserID = self.signUserIn(username: username, password: password) ?? ""
                     }) {
                         Text("Login In")
                             .padding()
