@@ -47,7 +47,7 @@ struct LoginView: View {
                     Button(action: {
                         loggedInUserID = self.signUserIn(username: username, password: password) ?? ""
                     }) {
-                        Text("Login In")
+                        Text("Log In")
                             .padding()
                             .foregroundColor(.white)
                             .background(Color.blue)

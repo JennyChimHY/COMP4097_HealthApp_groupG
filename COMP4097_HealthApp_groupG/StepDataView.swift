@@ -20,47 +20,66 @@ struct StepDataView: View {
     
 //    @FetchRequest(entity: Health.entity(), sortDescriptors: [])
 //    var healths: FetchedResults<Health>
+    
 
     var body: some View {
         
         VStack {
-            if let h = health {  //ensure the data is fetched in onAppear
-                //        List(healths.filter { $0.userID == loggedInUserID }) { health in
-                Text("Welcome \(h.username ?? "abc") !").padding()
-                    .font(.title)
+            if let h = health {  //ensure the data is fetched while onAppear
+          
+                HStack() {
+                    
+                    Image(systemName: "figure.run.circle.fill").resizable()
+                        .frame(width: 40, height: 40)
+                    
+                    Text("Welcome \(h.username ?? "abc") !").padding()
+                        .font(.title)
+                }
+            
+                VStack() {
+                    
+                    Text("Today's Steps: ").font(.largeTitle)
+                    
+                    Ring(progress: Double(h.dailyStep)/Double(h.goal), lineWidth: 20, processText: "", totalText: "\(h.dailyStep)", leftoverText: "Goal: \(h.goal)")
+                        .frame(width: 280, height: 280)
+                        .padding(.top, 30)
+                        .padding(.bottom, 20)
+                    
+                    Text("\(Int(Double(h.dailyStep)/Double(h.goal) * 100))%").font(.title)
+                    
+                    if (Double(h.dailyStep)/Double(h.goal) > 1.0) {
+                        Text("Congratulations!\nYou have achieved your goal today!")
+                            .padding(.bottom, 10)
+                            .font(.body)
+                            .multilineTextAlignment(.center)
+                    } else {
+                        Text("Keep it up!")
+                            .padding(.bottom, 10)
+                            .font(.body)
+                    }
+                }
                 
-                Image(systemName: "figure.run.circle.fill")
-                
-                VStack {
+                VStack() {
                     
-                    Text("Today's Steps: \(Int(h.dailyStep))").padding()
-                    
-                        .font(.system(size: 30, weight: .bold))
-                    Text("Accumulated Steps: \(Int(h.accumulateStep))").padding()
-                        .font(.system(size: 30))
-                    
-                    Spacer()
+                    Text("Accumulated Steps: \(Int(h.accumulateStep))")
+                        .font(.body)
                     
                     Text("Distance Obtained: \(String(format: "%.2f", totalDistance)) Km").onAppear() {
                         calculateDistance(steps: Double(h.dailyStep))
-                    }
+                    }.font(.body)
                     Text("Calories Burnt: \(String(format: "%.2f", totalCaloriesBurnt)) cal.").onAppear() {
                         calculateCalories(health: h)
-                    }
+                    }.font(.body)
                     
-                    
-                    Spacer()
                 }
             }
-            }.onAppear(perform: fetchData)
-        }
+        }.onAppear(perform: fetchData)
+    }
 }
 
 extension StepDataView {
     
     private func fetchData() {
-        
-        print("enter do")
         
         let viewContext = PersistenceController.shared.container.viewContext
 
@@ -90,8 +109,6 @@ extension StepDataView {
     func calculateCalories(health: Health) {
         print("calculateCalories")
         
-        
-        
         // Step 1: Calculate the Basal Metabolic Rate (BMR)
         var bmr: Double = 0 //initialize
         
@@ -109,6 +126,52 @@ extension StepDataView {
         totalCaloriesBurnt = bmr + stepsBurnt
     }
 }
+
+
+struct Ring: View {
+    var progress: Double
+    var lineWidth: CGFloat
+    var processText: String
+    var totalText: String
+    var leftoverText: String
+
+    var body: some View {
+        ZStack {
+            // Background Ring
+            Circle()
+                .stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
+                .foregroundColor(Color.yellow.opacity(0.2))
+
+            // Foreground Ring
+            Circle()
+                .trim(from: 0, to: CGFloat(min(progress, 1.0)))
+                .stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
+                .foregroundColor(Color.yellow)
+                .rotationEffect(Angle(degrees: -90)) // Start from the top
+
+            // Center Text
+            VStack {
+                Text(processText)
+                    .font(.title)
+                    .fontWeight(.bold) // Make the font bold
+                    .frame(maxWidth: .infinity, alignment: .center)
+
+                Text(totalText)
+                    .font(.system(size: 35)) // Set the desired font size
+                    .fontWeight(.bold) // Make the font bold
+                    .frame(maxWidth: .infinity, alignment: .center)
+
+                Text(leftoverText)
+                    .font(.title)
+                    .foregroundColor(.gray)
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
+            .frame(width: 200, height: 200) // Adjust the size of the frame as needed
+        }
+    }
+}
+
+
 struct StepDataView_Previews: PreviewProvider {
     let persistenceController = PersistenceController.shared
     static var previews: some View {
