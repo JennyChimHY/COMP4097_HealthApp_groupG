@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct StepDataView: View {
     
@@ -15,50 +16,69 @@ struct StepDataView: View {
     @State var totalDistance: Double = 0
     @State var totalCaloriesBurnt: Double = 0
     
-    @FetchRequest(entity: Health.entity(), sortDescriptors: [])
-    var healths: FetchedResults<Health>
+    @State var health: Health? //Health()
     
-    
+//    @FetchRequest(entity: Health.entity(), sortDescriptors: [])
+//    var healths: FetchedResults<Health>
+
     var body: some View {
-            
-        List(healths.filter { $0.userID == loggedInUserID }) { health in
-            
-            Text("Welcome \(health.username ?? "abc") !").padding()
-                .font(.title)
-            
-            VStack {
+        
+        VStack {
+            if let h = health {  //ensure the data is fetched in onAppear
+                //        List(healths.filter { $0.userID == loggedInUserID }) { health in
+                Text("Welcome \(h.username ?? "abc") !").padding()
+                    .font(.title)
                 
-                Text("Today's Steps: \(Int(health.dailyStep))").padding()
+                Image(systemName: "figure.run.circle.fill")
                 
-                    .font(.system(size: 30, weight: .bold))
-                Text("Accumulated Steps: \(Int(health.accumulateStep))").padding()
-                    .font(.system(size: 30))
-                
-                //TODO: gen a chart each 30 mins
-                //no history record
-                
-                Spacer()
-                
-                Text("Distance Obtained: \(String(format: "%.2f", totalDistance)) Km").onAppear() {
-                    calculateDistance(steps: Double(health.dailyStep))
+                VStack {
+                    
+                    Text("Today's Steps: \(Int(h.dailyStep))").padding()
+                    
+                        .font(.system(size: 30, weight: .bold))
+                    Text("Accumulated Steps: \(Int(h.accumulateStep))").padding()
+                        .font(.system(size: 30))
+                    
+                    Spacer()
+                    
+                    Text("Distance Obtained: \(String(format: "%.2f", totalDistance)) Km").onAppear() {
+                        calculateDistance(steps: Double(h.dailyStep))
+                    }
+                    Text("Calories Burnt: \(String(format: "%.2f", totalCaloriesBurnt)) cal.").onAppear() {
+                        calculateCalories(health: h)
+                    }
+                    
+                    
+                    Spacer()
                 }
-                Text("Calories Burnt: \(String(format: "%.2f", totalCaloriesBurnt)) cal.").onAppear() {
-                    calculateCalories(health: health)
-                }
-                
-                Spacer()
             }
-            
-        }.frame()
-    }
+            }.onAppear(perform: fetchData)
+        }
 }
 
 extension StepDataView {
-    //TODO: a function to calculate the km and calories
     
-//    func increaseStep() {
-//        todayStep = todayStep + 2
-//    }
+    private func fetchData() {
+        
+        print("enter do")
+        
+        let viewContext = PersistenceController.shared.container.viewContext
+
+        let fetchRequest: NSFetchRequest<Health> = Health.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "userID == %@", loggedInUserID)
+
+        do {
+            let healths = try viewContext.fetch(fetchRequest)
+            print(try viewContext.fetch(fetchRequest))
+            if healths.first != nil {
+                health = healths.first  //the 1st record is the target record
+                print("enter success")
+            }
+        } catch let error as NSError {
+            print("Fetch error: \(error), \(error.userInfo)")
+        }
+        
+    }
     
     func calculateDistance(steps: Double) {
         print("calculateDistance")
@@ -71,12 +91,8 @@ extension StepDataView {
         print("calculateCalories")
         
         
+        
         // Step 1: Calculate the Basal Metabolic Rate (BMR)
-     
-//        let weightKG: Double = 55  //55 kg
-//        let heightCM: Double = 160 //160 cm
-//        let age: Double = 21
-//        let gender: String = "F"  //female
         var bmr: Double = 0 //initialize
         
         if health.gender == "F" {
@@ -88,7 +104,7 @@ extension StepDataView {
         // Step 2: Calculate calories burned
         let caloriesPerStep: Double = 0.05
         let stepsBurnt: Double = Double(health.dailyStep) * caloriesPerStep
-        
+
         //Step 3: The calories burned through steps
         totalCaloriesBurnt = bmr + stepsBurnt
     }
