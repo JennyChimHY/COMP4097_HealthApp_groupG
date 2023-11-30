@@ -28,10 +28,10 @@ extension COMP4097_HealthApp_groupGApp {
            if !shouldSeedData { return }
 
            let healths: [[String: Any]] = [
-            ["id": "1", "userID": "001", "username": "Alan", "password": "123456", "dailyStep": 2000, "accumulateStep": 240000, "redemmedStep": 0, "goal": 10000],
-            ["id": "2", "userID": "002", "username": "Jenny", "password": "123456", "dailyStep": 10000, "accumulateStep": 200000, "redemmedStep": 0, "goal": 5000],
-            ["id": "3", "userID": "003", "username": "Martin", "password": "123456", "dailyStep": 5000, "accumulateStep": 500000, "redemmedStep": 0, "goal": 10000],
-            ["id": "4", "userID": "004", "username": "Kenny", "password": "123456", "dailyStep": 20000, "accumulateStep": 300000, "redemmedStep": 0, "goal": 15000]
+            ["id": "1", "userID": "001", "username": "Alan", "password": "123456", "dailyStep": 2000, "accumulateStep": 240000, "redemmedStep": 0, "goal": 10000, "weightKG" : 70, "heightCM" : 180, "age" : 21, "gender" : "M"],
+            ["id": "2", "userID": "002", "username": "Jenny", "password": "123456", "dailyStep": 10000, "accumulateStep": 200000, "redemmedStep": 0, "goal": 5000, "weightKG" : 50, "heightCM" : 160, "age" : 21, "gender" : "F"],
+            ["id": "3", "userID": "003", "username": "Martin", "password": "123456", "dailyStep": 5000, "accumulateStep": 500000, "redemmedStep": 0, "goal": 10000, "weightKG" : 80, "heightCM" : 180, "age" : 35, "gender" : "M"],
+            ["id": "4", "userID": "004", "username": "Kenny", "password": "123456", "dailyStep": 20000, "accumulateStep": 300000, "redemmedStep": 0, "goal": 15000, "weightKG" : 80, "heightCM" : 180, "age" : 35, "gender" : "M"]
            ]
 
         let viewContext = persistenceController.container.viewContext

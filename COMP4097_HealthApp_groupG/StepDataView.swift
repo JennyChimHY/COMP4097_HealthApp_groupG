@@ -40,10 +40,10 @@ struct StepDataView: View {
                 Spacer()
                 
                 Text("Distance Obtained: \(String(format: "%.2f", totalDistance)) Km").onAppear() {
-                    calculateDistance(steps: health.dailyStep)
+                    calculateDistance(steps: Double(health.dailyStep))
                 }
                 Text("Calories Burnt: \(String(format: "%.2f", totalCaloriesBurnt)) cal.").onAppear() {
-                    calculateCalories(steps: health.dailyStep)
+                    calculateCalories(health: health)
                 }
                 
                 Spacer()
@@ -67,27 +67,27 @@ extension StepDataView {
         totalDistance = (steps * averageStepLength) / 1000
     }
     
-    func calculateCalories(steps: Double) {
+    func calculateCalories(health: Health) {
         print("calculateCalories")
         
         
         // Step 1: Calculate the Basal Metabolic Rate (BMR)
      
-        let weightKG: Double = 55  //55 kg
-        let heightCM: Double = 160 //160 cm
-        let age: Double = 21
-        let gender: String = "F"  //female
+//        let weightKG: Double = 55  //55 kg
+//        let heightCM: Double = 160 //160 cm
+//        let age: Double = 21
+//        let gender: String = "F"  //female
         var bmr: Double = 0 //initialize
         
-        if gender == "F" {
-            bmr = 655.1 + (9.563 * weightKG) + (1.850 * heightCM) - (4.676 * age)
-        } else if gender == "M" {
-            bmr = 66.5 + (13.75 * weightKG) + (5.003 * heightCM) - (6.755 * age)
+        if health.gender == "F" {
+            bmr = 655.1 + (9.563 * health.weightKG) + (1.850 * health.heightCM) - (4.676 * Double(health.age))
+        } else if health.gender == "M" {
+            bmr = 66.5 + (13.75 * health.weightKG) + (5.003 * health.heightCM) - (6.755 * Double(health.age))
         }
 
         // Step 2: Calculate calories burned
         let caloriesPerStep: Double = 0.05
-        let stepsBurnt: Double = steps * caloriesPerStep
+        let stepsBurnt: Double = Double(health.dailyStep) * caloriesPerStep
         
         //Step 3: The calories burned through steps
         totalCaloriesBurnt = bmr + stepsBurnt
