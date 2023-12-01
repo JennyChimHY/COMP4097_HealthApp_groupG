@@ -74,7 +74,7 @@ struct RedeemView: View {
                                             .alert(alertTitle, isPresented: $showAlert, actions: {
                                                 Button("OK") {
                                                     let param = Parameter(healthparam: h, giftparam: gift)
-                                                    presentedParam.append(param)
+                                                    presentedParam = [param]
                                                     print("presentedParam")
                                                     print(presentedParam)
                                                 }

@@ -17,20 +17,20 @@ struct LoginView: View {
     var onLoginSuccess: (String) -> Void
     
     var body: some View {
-        ZStack {
+        NavigationView{
+            ZStack {
                 VStack {
                     Spacer().frame(height: 10)
                     
                     Text("Welcome back!")
                         .font(.title)
-                        
                     
                     Spacer().frame(height: 30)
                     
                     Image(systemName: "figure.run.circle.fill")
                         .resizable()
                         .frame(width:100, height: 100)
-                        //.imageScale(.large)
+                    //.imageScale(.large)
                     
                     TextField("Username", text: $username)
                         .padding()
@@ -70,6 +70,7 @@ struct LoginView: View {
                 }
                 .padding()
             }
+        }
         .edgesIgnoringSafeArea(.all)
     }
     
