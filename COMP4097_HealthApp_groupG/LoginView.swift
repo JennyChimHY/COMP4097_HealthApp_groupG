@@ -56,17 +56,17 @@ struct LoginView: View {
                     
                     Spacer().frame(height: 30)
                     
-                    HStack {
-                        Text("Not a member?")
-                            .font(.footnote)
-                        Spacer().frame(width: 5)
-                        NavigationLink(destination: RegistryView(onLoginSuccess:onLoginSuccess)) {
-                            Text("Register Now")
-                                .font(.footnote)
-                                .foregroundColor(.cyan)
-                                .fontWeight(.bold)
-                        }
-                    }
+//                    HStack {
+//                        Text("Not a member?")
+//                            .font(.footnote)
+//                        Spacer().frame(width: 5)
+//                        NavigationLink(destination: RegistryView(onLoginSuccess:onLoginSuccess)) {
+//                            Text("Register Now")
+//                                .font(.footnote)
+//                                .foregroundColor(.cyan)
+//                                .fontWeight(.bold)
+//                        }
+//                    }
                 }
                 .padding()
             }
