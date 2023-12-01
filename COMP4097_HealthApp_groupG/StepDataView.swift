@@ -42,7 +42,7 @@ struct StepDataView: View {
                     
                     Ring(progress: Double(h.dailyStep)/Double(h.goal), lineWidth: 20, processText: "", totalText: "\(h.dailyStep)", leftoverText: "Goal: \(h.goal)")
                         .frame(width: 280, height: 280)
-                        .padding(.top, 30)
+                        .padding(.top, 20)
                         .padding(.bottom, 20)
                     
                     Text("\(Int(Double(h.dailyStep)/Double(h.goal) * 100))%").font(.title)
@@ -59,18 +59,30 @@ struct StepDataView: View {
                     }
                 }
                 
-                VStack() {
+                HStack() {
+                    VStack(alignment: .leading) {
+                        Image(systemName: "sum")
+                        Image(systemName: "mappin.and.ellipse")
+                        Image(systemName: "flame.fill")
+                    }
                     
-                    Text("Accumulated Steps: \(Int(h.accumulateStep))")
-                        .font(.body)
+                    VStack(alignment: .leading) {
+                        Text("Accumulated Steps: ").font(.body)
+                        Text("Distance Obtained: ").font(.body)
+                        Text("Calories Burnt: ").font(.body)
+                    }
                     
-                    Text("Distance Obtained: \(String(format: "%.2f", totalDistance)) Km").onAppear() {
-                        calculateDistance(steps: Double(h.dailyStep))
-                    }.font(.body)
-                    Text("Calories Burnt: \(String(format: "%.2f", totalCaloriesBurnt)) cal.").onAppear() {
-                        calculateCalories(health: h)
-                    }.font(.body)
-                    
+                    VStack(alignment: .trailing) {
+                        Text("\(Int(h.accumulateStep))")
+                            .font(.body)
+                        Text("\(String(format: "%.2f", totalDistance)) Km").onAppear() {
+                            calculateDistance(steps: Double(h.dailyStep))
+                        }.font(.body)
+                        
+                        Text("\(String(format: "%.2f", totalCaloriesBurnt)) cal.").onAppear() {
+                            calculateCalories(health: h)
+                        }.font(.body)
+                    }
                 }
             }
         }.onAppear(perform: fetchData)
@@ -166,7 +178,7 @@ struct Ring: View {
                     .foregroundColor(.gray)
                     .frame(maxWidth: .infinity, alignment: .center)
             }
-            .frame(width: 200, height: 200) // Adjust the size of the frame as needed
+            .frame(width: 170, height: 170) // Adjust the size of the frame as needed
         }
     }
 }

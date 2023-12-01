@@ -13,6 +13,7 @@
 		9F3B62AC2B107FB700A8AA3F /* HealthData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B62A92B107FB700A8AA3F /* HealthData.xcdatamodeld */; };
 		9F3B62AD2B107FB700A8AA3F /* Health+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B62AB2B107FB700A8AA3F /* Health+CoreDataClass.swift */; };
 		9FA542D12B198218001D01B5 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 9FA542D02B198218001D01B5 /* .gitignore */; };
+		D24C168A2B19917E00058948 /* RedeemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D24C16892B19917E00058948 /* RedeemDetailView.swift */; };
 		D2D65DB92B1054D00066BB7D /* StepDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D65DB82B1054D00066BB7D /* StepDataView.swift */; };
 		D2D65DBB2B1054DC0066BB7D /* GoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D65DBA2B1054DC0066BB7D /* GoalView.swift */; };
 		D2D65DBD2B1054EA0066BB7D /* RedeemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D65DBC2B1054EA0066BB7D /* RedeemView.swift */; };
@@ -49,6 +50,7 @@
 		9F3B62AA2B107FB700A8AA3F /* HealthData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HealthData.xcdatamodel; sourceTree = "<group>"; };
 		9F3B62AB2B107FB700A8AA3F /* Health+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Health+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		9FA542D02B198218001D01B5 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		D24C16892B19917E00058948 /* RedeemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedeemDetailView.swift; sourceTree = "<group>"; };
 		D2D65DB82B1054D00066BB7D /* StepDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepDataView.swift; sourceTree = "<group>"; };
 		D2D65DBA2B1054DC0066BB7D /* GoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalView.swift; sourceTree = "<group>"; };
 		D2D65DBC2B1054EA0066BB7D /* RedeemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedeemView.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				D2D65DB82B1054D00066BB7D /* StepDataView.swift */,
 				D2D65DBA2B1054DC0066BB7D /* GoalView.swift */,
 				D2D65DBC2B1054EA0066BB7D /* RedeemView.swift */,
+				D24C16892B19917E00058948 /* RedeemDetailView.swift */,
 				D2DDC5172B07497D008DB215 /* Assets.xcassets */,
 				D2DDC5192B07497D008DB215 /* COMP4097_HealthApp_groupG.entitlements */,
 				D2DDC51A2B07497D008DB215 /* Preview Content */,
@@ -288,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F3B62AC2B107FB700A8AA3F /* HealthData.xcdatamodeld in Sources */,
+				D24C168A2B19917E00058948 /* RedeemDetailView.swift in Sources */,
 				D2DDC5162B07497C008DB215 /* ContentView.swift in Sources */,
 				9F3B62A82B107F7E00A8AA3F /* Persistence.swift in Sources */,
 				9F3B62A62B107CB500A8AA3F /* LoginView.swift in Sources */,

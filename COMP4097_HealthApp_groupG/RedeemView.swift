@@ -6,69 +6,147 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct RedeemView: View {
     
-    @State var steps = 300000
+    @AppStorage("loggedInUserID") var loggedInUserID = ""
+    @State var viewContext = PersistenceController.shared.container.viewContext
+    
+    @State var health: Health?
+    @State private var refreshFlag = false
+    
+    @State private var alertTitle: String = ""
+    @State private var showAlert: Bool = false
+    
+//    @State private var presentedNumbers:[Int] = []
     
     var body: some View {
-        VStack {
-            Text("Gift Redemption")
-                .padding()
-                .font(.system(.title, weight: .bold))
+       
             
-            List(Gift.gifts) { gift in
-                VStack(alignment: .center) { // Align items to the center
-                    Image(gift.image)
-                        .resizable()
-                        .frame(width: 100.0, height: 100.0)
-                        .cornerRadius(5)
+            VStack {
+                if let h = health {
                     
-                    Text("Gift: \(gift.title)")
+                    Text("Gift Redemption")
+                        .padding(.top, 50)
+                        .font(.system(.title, weight: .bold))
                     
-                    Text("Steps to Redeem: \(gift.stepRequired)")
+                    Text("Available points: \(h.accumulateStep - h.redemmedStep)")
+                        .padding(.top, 10)
+                        .font(.system(.subheadline, weight: .bold))
+                    Text("*Points = Steps Accumulated")
+                        .font(.footnote)
                     
-                    if (steps > gift.stepRequired) {
-                        Button(action: {
-                            consume(required: gift.stepRequired)
-                        }) {
-                            Text("Redeem")
-                                .font(.subheadline)
-                                .padding()
-                                .foregroundColor(.white)
-                                .background(Color.blue)
-                                .cornerRadius(8)
-                                .frame(width: 100.0, height: 30.0)
-                        }.padding()
-                        
-//                      .alert(alertTitle, isPresented: $showAlert, actions: {
-//                            Button("OK") {}
-//                            })
-                        
-                    } else {
-                        Button(action: {}) {
-                            Text("Redeem")
-                                .font(.subheadline)
-                                .padding()
-                                .foregroundColor(.white)
-                                .background(Color.gray)
-                                .cornerRadius(8)
-                        }
-                        .padding()
-                    }
+                    List(Gift.gifts) { (gift: Gift) in
+//                        NavigationStack(path: $presentedNumbers) {
+                            VStack(alignment: .center) { // Align items to the center
+                                HStack() { Image(gift.image)
+                                        .resizable()
+                                        .frame(width: 100.0, height: 100.0)
+                                        .cornerRadius(5)
+                                    
+                                    VStack() {
+                                        
+                                        Text("\(gift.title)").font(.headline)
+                                        
+                                        HStack() {
+                                            VStack(alignment: .trailing) {
+                                                Text("Required Points: ")
+                                                Text("Remaining: ")
+                                            }
+                                            VStack(alignment: .trailing) {
+                                                Text("\(gift.stepRequired)")
+                                                Text("\(gift.remaining)")
+                                            }
+                                        }
+                                        
+                                        
+                                        if ((h.accumulateStep - h.redemmedStep) > 0 && (gift.remaining > 0) && (h.accumulateStep - h.redemmedStep) >= gift.stepRequired) { //safe check
+                                            Button(action: {
+                                                consume(health: h, gift: gift)
+                                            }) {
+                                                Text("Redeem")
+                                                    .font(.subheadline)
+                                                    .padding()
+                                                    .foregroundColor(.white)
+                                                    .background(Color.blue)
+                                                    .cornerRadius(8)
+                                                    .frame(width: 100.0, height: 30.0)
+                                            }.padding()
+                                            
+                                                .alert(alertTitle, isPresented: $showAlert, actions: {
+                                                    Button("OK") {
+                                                        //todo: change destination?
+//                                                        presentedNumbers.append(1)
+                                                    }
+                                                })
+                                            
+                                        } else {
+                                            Button(action: {}) {
+                                                Text("Redeem")
+                                                    .font(.subheadline)
+                                                    .padding()
+                                                    .foregroundColor(.white)
+                                                    .background(Color.gray)
+                                                    .cornerRadius(8)
+                                                    .frame(width: 100.0, height: 30.0)
+                                            }.padding()
+                                        }
+                                    }
+                                }
+                            }.onChange(of: refreshFlag) { _ in
+                                // Perform actions when 'refreshFlag' changes
+                                fetchData()
+                            }
+                            
+//                        }
+//                        .navigationDestination(for: Int.self) { i in
+//                            Text("Detail \(i)")
+//                            RedeemDetailView(from: "list", health: h, gift: gift)
+//                        }
+//                        .navigationTitle("Gift Redemption")
+                    }.frame(height: CGFloat(15) * CGFloat(45))
+                    
                 }
-                .frame(maxWidth: .infinity) // Expand the VStack horizontally
-            }
-            .frame(height: CGFloat(15) * CGFloat(45))
-        }
-        .frame(maxWidth: .infinity) // Expand the outer VStack horizontally
+                
+            }.onAppear(perform: fetchData)
+                .frame(maxWidth: .infinity) // Expand the outer VStack horizontally
     }
 }
 
 extension RedeemView {
-    func consume(required: Int) {
-        steps = steps - required
+    
+    func fetchData() {
+        
+        let viewContext = PersistenceController.shared.container.viewContext
+
+        let fetchRequest: NSFetchRequest<Health> = Health.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "userID == %@", loggedInUserID)
+
+        do {
+            let healths = try viewContext.fetch(fetchRequest)
+            print(try viewContext.fetch(fetchRequest))
+            if healths.first != nil {
+                health = healths.first  //the 1st record is the target record
+            }
+        } catch let error as NSError {
+            print("Fetch error: \(error), \(error.userInfo)")
+        }
     }
+    
+    func consume(health: Health, gift: Gift) {
+        let updateRedemmedStep = Int(health.redemmedStep) + gift.stepRequired
+//        gift.remaining = gift.remaining - 1
+        viewContext.performAndWait {
+            health.redemmedStep = Int32(updateRedemmedStep)
+//            health.redemmedStep = 0  //for reset
+            try? viewContext.save()
+            refreshFlag.toggle() // Toggle the refresh flag to refresh the view
+            showAlert = true
+            alertTitle = "\(gift.title) Redeem Success!"
+        }
+    }
+    
 }
 
 struct Gift: Identifiable {
@@ -81,9 +159,12 @@ struct Gift: Identifiable {
 
 extension Gift {
     static let gifts: [Gift] = [
-        Gift(id: "bottle", title: "Water Bottles", image: "bottle", stepRequired: 400000, remaining: 200),
-        Gift(id: "towel", title: "Sports Towel", image: "towel", stepRequired: 200000, remaining: 400),
         Gift(id: "chicken", title: "Instant Chicken Breast", image: "chicken", stepRequired: 50000, remaining: 1000),
+        Gift(id: "towel", title: "Sports Towel", image: "towel", stepRequired: 200000, remaining: 400),
+        Gift(id: "bottle", title: "Water Bottles", image: "bottle", stepRequired: 300000, remaining: 200),
+        Gift(id: "protein", title: "Protein", image: "protein", stepRequired: 400000, remaining: 100),
+        Gift(id: "bag", title: "Sports Bag", image: "bag", stepRequired: 500000, remaining: 50),
+        Gift(id: "rope", title: "Training Rope", image: "rope", stepRequired: 550000, remaining: 20)
     ]
 }
 
