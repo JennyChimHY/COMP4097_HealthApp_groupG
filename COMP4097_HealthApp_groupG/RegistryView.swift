@@ -53,19 +53,18 @@ struct RegistryView: View {
                 
                 Spacer().frame(height: 30)
                 
-//                HStack {
-//                    Text("Already have an account?")
-//                        .font(.footnote)
-//                        .foregroundColor(.black)
-//                    Spacer().frame(width: 5)
-//                    NavigationLink(destination: LoginView(onLoginSuccess: onLoginSuccess)) {
-//                        Text("Login Now")
-//                            .font(.footnote)
-//                            .foregroundColor(.cyan)
-//                            .fontWeight(.bold)
-//                    }
-//                }
-//                .padding()
+                HStack {
+                    Text("Already have an account?")
+                        .font(.footnote)
+                    Spacer().frame(width: 5)
+                    NavigationLink(destination: LoginView(onLoginSuccess: onLoginSuccess)) {
+                        Text("Login Now")
+                            .font(.footnote)
+                            .foregroundColor(.cyan)
+                            .fontWeight(.bold)
+                    }
+                }
+                .padding()
             }
             .edgesIgnoringSafeArea(.all)
         }
