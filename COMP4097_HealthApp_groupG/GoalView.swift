@@ -65,14 +65,12 @@ struct GoalView: View {
             Spacer().frame(height: 30)
             
             Chart {
+                RuleMark(y: .value("step", 10000))
+                    .foregroundStyle(Color.gray)
                 ForEach(viewModel.data) { day in
                     BarMark(
                         x: .value("date", day.date),
                         y: .value("step", day.steps)
-                    )
-                    LineMark(
-                        x: .value("date", day.date),
-                        y: .value("step", 10000)
                     )
                 }
             }
