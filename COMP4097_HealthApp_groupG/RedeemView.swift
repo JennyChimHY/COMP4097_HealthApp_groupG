@@ -19,98 +19,97 @@ struct RedeemView: View {
     @State private var alertTitle: String = ""
     @State private var showAlert: Bool = false
     
-//    @State private var presentedNumbers:[Int] = []
+    @State private var presentedParam:[Parameter] = []
     
     var body: some View {
-       
-            
+        
+        NavigationStack(path: $presentedParam) {
             VStack {
                 if let h = health {
                     
-                    Text("Gift Redemption")
-                        .padding(.top, 50)
-                        .font(.system(.title, weight: .bold))
-                    
                     Text("Available points: \(h.accumulateStep - h.redemmedStep)")
-                        .padding(.top, 10)
+                        .padding(.top, 60)
                         .font(.system(.subheadline, weight: .bold))
                     Text("*Points = Steps Accumulated")
                         .font(.footnote)
                     
                     List(Gift.gifts) { (gift: Gift) in
-//                        NavigationStack(path: $presentedNumbers) {
-                            VStack(alignment: .center) { // Align items to the center
-                                HStack() { Image(gift.image)
-                                        .resizable()
-                                        .frame(width: 100.0, height: 100.0)
-                                        .cornerRadius(5)
+                        
+                        VStack(alignment: .center) { // Align items to the center
+                            HStack() {
+                                Image(gift.image)
+                                    .resizable()
+                                    .frame(width: 100.0, height: 100.0)
+                                    .cornerRadius(5)
+                                
+                                VStack() {
                                     
-                                    VStack() {
-                                        
-                                        Text("\(gift.title)").font(.headline)
-                                        
-                                        HStack() {
-                                            VStack(alignment: .trailing) {
-                                                Text("Required Points: ")
-                                                Text("Remaining: ")
-                                            }
-                                            VStack(alignment: .trailing) {
-                                                Text("\(gift.stepRequired)")
-                                                Text("\(gift.remaining)")
-                                            }
+                                    Text("\(gift.title)").font(.headline)
+                                    
+                                    HStack() {
+                                        VStack(alignment: .trailing) {
+                                            Text("Required Points: ")
+                                            Text("Remaining: ")
                                         }
-                                        
-                                        
-                                        if ((h.accumulateStep - h.redemmedStep) > 0 && (gift.remaining > 0) && (h.accumulateStep - h.redemmedStep) >= gift.stepRequired) { //safe check
-                                            Button(action: {
-                                                consume(health: h, gift: gift)
-                                            }) {
-                                                Text("Redeem")
-                                                    .font(.subheadline)
-                                                    .padding()
-                                                    .foregroundColor(.white)
-                                                    .background(Color.blue)
-                                                    .cornerRadius(8)
-                                                    .frame(width: 100.0, height: 30.0)
-                                            }.padding()
-                                            
-                                                .alert(alertTitle, isPresented: $showAlert, actions: {
-                                                    Button("OK") {
-                                                        //todo: change destination?
-//                                                        presentedNumbers.append(1)
-                                                    }
-                                                })
-                                            
-                                        } else {
-                                            Button(action: {}) {
-                                                Text("Redeem")
-                                                    .font(.subheadline)
-                                                    .padding()
-                                                    .foregroundColor(.white)
-                                                    .background(Color.gray)
-                                                    .cornerRadius(8)
-                                                    .frame(width: 100.0, height: 30.0)
-                                            }.padding()
+                                        VStack(alignment: .trailing) {
+                                            Text("\(gift.stepRequired)")
+                                            Text("\(gift.remaining)")
                                         }
                                     }
+                                    
+                                    
+                                    if ((h.accumulateStep - h.redemmedStep) > 0 && (gift.remaining > 0) && (h.accumulateStep - h.redemmedStep) >= gift.stepRequired) { //safe check
+                                        Button(action: {
+                                            consume(health: h, gift: gift)
+                                        }) {
+                                            Text("Redeem")
+                                                .font(.subheadline)
+                                                .padding()
+                                                .foregroundColor(.white)
+                                                .background(Color.blue)
+                                                .cornerRadius(8)
+                                                .frame(width: 100.0, height: 30.0)
+                                        }.padding()
+                                        
+                                            .alert(alertTitle, isPresented: $showAlert, actions: {
+                                                Button("OK") {
+                                                    let param = Parameter(healthparam: h, giftparam: gift)
+                                                    presentedParam.append(param)
+                                                    print("presentedParam")
+                                                    print(presentedParam)
+                                                }
+                                            })
+                                        
+                                    } else {
+                                        Button(action: {}) {
+                                            Text("Redeem")
+                                                .font(.subheadline)
+                                                .padding()
+                                                .foregroundColor(.white)
+                                                .background(Color.gray)
+                                                .cornerRadius(8)
+                                                .frame(width: 100.0, height: 30.0)
+                                        }.padding()
+                                    }
                                 }
-                            }.onChange(of: refreshFlag) { _ in
-                                // Perform actions when 'refreshFlag' changes
-                                fetchData()
                             }
-                            
-//                        }
-//                        .navigationDestination(for: Int.self) { i in
-//                            Text("Detail \(i)")
-//                            RedeemDetailView(from: "list", health: h, gift: gift)
-//                        }
-//                        .navigationTitle("Gift Redemption")
+                        }.onChange(of: refreshFlag) { _ in
+                            // Perform actions when 'refreshFlag' changes
+                            fetchData()
+                        }
+                        
+                        
                     }.frame(height: CGFloat(15) * CGFloat(45))
                     
                 }
                 
             }.onAppear(perform: fetchData)
                 .frame(maxWidth: .infinity) // Expand the outer VStack horizontally
+        .navigationDestination(for: Parameter.self) { i in
+            RedeemDetailView(from: "list", health: i.healthparam, gift: i.giftparam)
+        }
+        .navigationTitle("Gift Redemption")
+    }
     }
 }
 
@@ -147,6 +146,22 @@ extension RedeemView {
         }
     }
     
+}
+
+struct Parameter: Hashable {
+    
+    let healthparam: Health
+    let giftparam: Gift
+    
+    func hash(into hasher: inout Hasher) {
+            hasher.combine(healthparam.id)
+            hasher.combine(giftparam.id)
+        }
+
+        static func == (lhs: Parameter, rhs: Parameter) -> Bool {
+            return lhs.healthparam.id == rhs.healthparam.id && lhs.giftparam.id == rhs.giftparam.id
+        }
+
 }
 
 struct Gift: Identifiable {
