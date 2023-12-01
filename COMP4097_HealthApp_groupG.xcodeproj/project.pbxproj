@@ -12,6 +12,7 @@
 		9F3B62A82B107F7E00A8AA3F /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B62A72B107F7E00A8AA3F /* Persistence.swift */; };
 		9F3B62AC2B107FB700A8AA3F /* HealthData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B62A92B107FB700A8AA3F /* HealthData.xcdatamodeld */; };
 		9F3B62AD2B107FB700A8AA3F /* Health+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B62AB2B107FB700A8AA3F /* Health+CoreDataClass.swift */; };
+		9FA542D12B198218001D01B5 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 9FA542D02B198218001D01B5 /* .gitignore */; };
 		D2D65DB92B1054D00066BB7D /* StepDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D65DB82B1054D00066BB7D /* StepDataView.swift */; };
 		D2D65DBB2B1054DC0066BB7D /* GoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D65DBA2B1054DC0066BB7D /* GoalView.swift */; };
 		D2D65DBD2B1054EA0066BB7D /* RedeemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D65DBC2B1054EA0066BB7D /* RedeemView.swift */; };
@@ -47,6 +48,7 @@
 		9F3B62A72B107F7E00A8AA3F /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		9F3B62AA2B107FB700A8AA3F /* HealthData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HealthData.xcdatamodel; sourceTree = "<group>"; };
 		9F3B62AB2B107FB700A8AA3F /* Health+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Health+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		9FA542D02B198218001D01B5 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		D2D65DB82B1054D00066BB7D /* StepDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepDataView.swift; sourceTree = "<group>"; };
 		D2D65DBA2B1054DC0066BB7D /* GoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalView.swift; sourceTree = "<group>"; };
 		D2D65DBC2B1054EA0066BB7D /* RedeemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedeemView.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 		D2DDC5072B07497C008DB215 = {
 			isa = PBXGroup;
 			children = (
+				9FA542D02B198218001D01B5 /* .gitignore */,
 				D2DDC5122B07497C008DB215 /* COMP4097_HealthApp_groupG */,
 				D2DDC5242B07497D008DB215 /* COMP4097_HealthApp_groupGTests */,
 				D2DDC52E2B07497D008DB215 /* COMP4097_HealthApp_groupGUITests */,
@@ -258,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2DDC51C2B07497D008DB215 /* Preview Assets.xcassets in Resources */,
+				9FA542D12B198218001D01B5 /* .gitignore in Resources */,
 				D2DDC5182B07497D008DB215 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
